@@ -1,0 +1,152 @@
+---
+title: "Distance Measures for Geometric Graphs"
+subtitle: FWCG, 2022
+author: "Sushovan Majhi, UC Berkeley<br>Carola Wenk, Tulane University"
+format: 
+    revealjs:
+        theme: dark
+        slide-number: true
+        self-contained: true
+        incremental: true
+bibliography: references.bib
+---
+
+## Motivation
+
+- Graphs representaion facilitates easy desciption of relational patterns
+- Pattern Recognition becomes the problem of measuring similarity between two
+graphs
+- A distance measure is deemed *meaningful* if
+    - small distance implies similarity
+    - large distance reveals dissimilarity
+
+- Graph comaprison has been widely studied both by the *Pattern Recognition* and *Database* community.
+    - Geometric graphs are new! [@cgkss-msgg-09]
+
+
+## This Morning's Agenda
+- What is a *Geometric Graph*?
+- Where are they?
+- Why defining a similarity measure for them is challenging?
+- The two friends: *GED* and *GGD*
+- How the two measures compare?
+- Computational complexity results
+- Questions?
+
+## Geometric Graphs $\mathbb{R}^d$
+A combinatorial graph $G=(V,E)$ is called *geometric* if  
+
+- $V\subset\mathbb{R}^d$  
+- An edge $(u,v)\in E$ is identified with the line segment $\overline{uv}$ 
+- edges intersect only at their endpoints
+
+. . .
+
+![](geometric.svg){fig-align="center"}
+
+## Applications
+
+### Letter Recognition 
+![IAM [@da_vitoria_lobo_iam_2008]](sample.png)
+
+## Applications
+### Map Comaprison
+
+::: {layout-ncol=2}
+
+![](mahmuda.jpg)
+
+![](sophia.jpg)
+
+:::
+Source: *mapconstruction.org [@mapconstructionorg]*
+
+## How to Define Distance between Two Graphs?
+Given two geometric graphs $G, H$:
+
+- check if they are (combinatorial) isomorphic
+    - not robust
+    - not lenient to local, minor defects
+- correct *small* defects, but at a *small* cost
+
+## Geometric Edit Operations
+
+- deletion (or insertion) of a vertex does not cost
+- deletion (or insertion) of an edge costs $C_E$ times its length
+- translation of a vertex costs $C_V$ times the displacment plus $C_E$ times
+the total length changes in the incident edges.
+
+. . . 
+
+### An Example Edit Path
+::: {layout-ncol=5}
+
+![](0.png)
+
+![](1.png)
+
+![](2.png)
+
+![](3.png)
+
+![](4.png)
+
+:::
+
+## Geometric Edit Distance (GED)
+$$GED(G,H):=\inf cost(P),$$
+where the infimum is taken over all edit paths from $G$ to $H$.
+
+. . . 
+
+> GED is a metric for positive $C_V, C_E$.
+
+### Cons
+- not computationally feasible
+- infinitely many edit paths
+- uncountable alphabet
+
+## Geometric Graph Distance (GGD)
+
+### Inexact Matching Correspondence
+- define $\pi$
+
+$$
+    \cost(\pi)= 
+    \underbrace{\sum_{\substack{u\in V^G \\ \pi(u)\neq\epsilon_V}} 
+    C_V\lvert u-\pi(u)|}_\text{vertex translations} + 
+    \underbrace{\sum_{\substack{e\in E^G \\ \pi(e)\neq\epsilon_E}} 
+    C_E\big||e|-|\pi(e)|\big|}_\text{edge translations} + 
+    \underbrace{\sum_{\substack{e\in E^G \\ \pi(e)=\epsilon_E}} C_E|e|}
+    _\text{edge deletions} + 
+    \underbrace{\sum_{\substack{f\in E^H \\ \pi^{-1}(f)=\epsilon_E}} C_E|f|}
+    _\text{edge deletions}
+$$
+
+$$
+\ggd(G,H)\eqdef\min_{\pi\in\Pi(G,H)}\cost(\pi).
+$$
+
+- GGD is a metric.
+
+## Comparing GED and GGD
+$$
+\ggd(G,H)\leq\ged(G,H)\leq\left(1+\Delta\frac{C_E}{C_V}\right)\ggd(G,H)
+$$
+
+## Compexity of GGD
+
+### Known Results
+- NP-hard for highly non-planar instances
+- NP-hard for planar if $C_V<<C_E$
+
+### Our Results
+- NP-hard even if (i) planar, (ii) $C_V,C_E$ arbitrary
+
+## Further Questions
+- APX-hardness
+- PSAT
+- How to choose $C_V, C_E$, machine learning??
+
+# Thanks
+Say hi: smajhi@berkeley.edu
