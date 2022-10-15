@@ -1,7 +1,7 @@
 ---
 title: "Distance Measures for Geometric Graphs"
-subtitle: FWCG, 2022
-author: "Sushovan Majhi, UC Berkeley<br>Carola Wenk, Tulane University"
+subtitle: FWCG 2022
+author: "<span style='color:red'>Sush</span>ovan Majhi, UC Berkeley<br>Carola Wenk, Tulane University"
 format: 
     revealjs:
         theme: dark
@@ -11,6 +11,15 @@ format:
 bibliography: references.bib
 ---
 
+## This Morning's Agenda
+- Motivation
+- What is a *Geometric Graph*?
+- Why defining a similarity measure for them is challenging?
+- The two friends: *GED* and *GGD*
+- How the two measures compare?
+- Computational complexity results
+- Questions?
+
 ## Motivation
 
 - Graphs representaion facilitates easy desciption of relational patterns
@@ -18,20 +27,12 @@ bibliography: references.bib
 graphs
 - A distance measure is deemed *meaningful* if
     - small distance implies similarity
-    - large distance reveals dissimilarity
+    - large distance reveals disparity
 
 - Graph comaprison has been widely studied both by the *Pattern Recognition* and *Database* community.
     - Geometric graphs are new! [@cgkss-msgg-09]
 
 
-## This Morning's Agenda
-- What is a *Geometric Graph*?
-- Where are they?
-- Why defining a similarity measure for them is challenging?
-- The two friends: *GED* and *GGD*
-- How the two measures compare?
-- Computational complexity results
-- Questions?
 
 ## Geometric Graphs $\mathbb{R}^d$
 A combinatorial graph $G=(V,E)$ is called *geometric* if  
@@ -83,11 +84,17 @@ the total length changes in the incident edges.
 
 ![](0.png)
 
-![](1.png)
+:::{.fragment}
+![$C_E|u_1u_2|$](1.png)
+:::
 
-![](2.png)
+:::{.fragment}
+![<span style='font-size: 0.7em'>$C_V|v_3-u_2|$<br> $+C_E||u_3v_3|-|u_2u_3||$</span>](2.png)
+:::
 
-![](3.png)
+:::{.fragment}
+![<span style='font-size: 0.7em'>$C_V|u_3-v_2|$<br> $+C_E||v_2v_3|-|u_3v_3||$</span>](3.png)
+:::
 
 ![](4.png)
 
@@ -97,56 +104,68 @@ the total length changes in the incident edges.
 $$GED(G,H):=\inf cost(P),$$
 where the infimum is taken over all edit paths from $G$ to $H$.
 
-. . . 
 
-> GED is a metric for positive $C_V, C_E$.
+::: {.fragment}
+#### Pros
+- the notion is very intuitive
+- GED is a metric for positive contants $C_V, C_E$.
+:::
 
-### Cons
+::: {.fragment}
+#### Cons
 - not computationally feasible
 - infinitely many edit paths
 - uncountable alphabet
+:::
 
 ## Geometric Graph Distance (GGD)
 
-### Inexact Matching Correspondence
-- define $\pi$
+#### Inexact Matching ($\pi$) and its Cost
+- choose isomporhpic subgraphs $G',H'$ of $G,H$, respectively
+- delete the rest and *pay* for it
+- finally, *morph* $G'$ onto $H'$ and *pay* for it
+
+. . .
+
+![](pi.png){fig-align="center"}
+
+
+## Geometric Graph Distance (GGD)
 
 $$
-    \cost(\pi)= 
-    \underbrace{\sum_{\substack{u\in V^G \\ \pi(u)\neq\epsilon_V}} 
-    C_V\lvert u-\pi(u)|}_\text{vertex translations} + 
-    \underbrace{\sum_{\substack{e\in E^G \\ \pi(e)\neq\epsilon_E}} 
-    C_E\big||e|-|\pi(e)|\big|}_\text{edge translations} + 
-    \underbrace{\sum_{\substack{e\in E^G \\ \pi(e)=\epsilon_E}} C_E|e|}
-    _\text{edge deletions} + 
-    \underbrace{\sum_{\substack{f\in E^H \\ \pi^{-1}(f)=\epsilon_E}} C_E|f|}
-    _\text{edge deletions}
+GGD(G,H):=\min_{\text{matching }\pi}cost(\pi).
 $$
 
-$$
-\ggd(G,H)\eqdef\min_{\pi\in\Pi(G,H)}\cost(\pi).
-$$
+- GGD is a metric
+- computationally feasible
 
-- GGD is a metric.
+. . .
 
-## Comparing GED and GGD
-$$
-\ggd(G,H)\leq\ged(G,H)\leq\left(1+\Delta\frac{C_E}{C_V}\right)\ggd(G,H)
-$$
+#### Fact:
+$$GGD(G,H)\leq GED(G,H)\leq\left(1+\Delta\frac{C_E}{C_V}\right)GGD(G,H)$$
 
 ## Compexity of GGD
-
-### Known Results
+:::{.fragment}
+### Known Results [@cgkss-msgg-09]
 - NP-hard for highly non-planar instances
-- NP-hard for planar if $C_V<<C_E$
+- NP-hard for planar graphs if $C_V<<C_E$
+:::
 
+:::{.fragment}
 ### Our Results
-- NP-hard even if (i) planar, (ii) $C_V,C_E$ arbitrary
+NP-hard even if  
 
-## Further Questions
+- planar, and  
+- $C_V,C_E$ arbitrary
+:::
+
+## What's Next??
 - APX-hardness
-- PSAT
-- How to choose $C_V, C_E$, machine learning??
+- PTAS
+- empirical evidence
+- *learn* $C_V, C_E$
 
-# Thanks
-Say hi: smajhi@berkeley.edu
+## Thanks
+Email: <smajhi@berkeley.edu>
+
+### References
